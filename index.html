@@ -33,6 +33,7 @@
       font-family: sans-serif;
       font-size: 20px;
       z-index: 999;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -49,31 +50,31 @@
   const video = document.getElementById("video");
   const overlay = document.getElementById("overlay");
 
-  function startVideo() {
+  async function startVideo() {
     overlay.style.display = "none";
 
-    video.muted = false;
+    try {
+      // IMPORTANTE: play subito dentro il gesto utente
+      await video.play();
 
-    const playPromise = video.play();
+      // audio dopo play (più compatibile)
+      video.muted = false;
 
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // fallback: se autoplay audio è bloccato
-        video.muted = true;
-        video.play();
-      });
+    } catch (err) {
+      console.log("Autoplay bloccato:", err);
+
+      // fallback sicuro
+      video.muted = true;
+      await video.play();
     }
 
-    // fullscreen dentro il gesto utente (IMPORTANTISSIMO)
-    if (video.requestFullscreen) {
-      video.requestFullscreen().catch(() => {});
-    } else if (video.webkitEnterFullscreen) {
-      video.webkitEnterFullscreen(); // iPhone
-    }
+    // fullscreen (opzionale)
+    try {
+      await video.requestFullscreen();
+    } catch (e) {}
   }
 
   overlay.addEventListener("click", startVideo);
-  overlay.addEventListener("touchstart", startVideo);
 </script>
 
 </body>
