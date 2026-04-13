@@ -16,9 +16,10 @@
     }
 
     video {
-      width: 576px;
-      height: 1024px;
-      object-fit: cover;
+      height: 100vh;
+      width: auto;
+      max-width: 100vw;
+      object-fit: contain;
       background: black;
     }
   </style>
@@ -26,20 +27,17 @@
 
 <body>
 
-  <video id="video" controls>
+  <video id="video" controls playsinline>
     <source src="video.mp4" type="video/mp4">
-    Il tuo browser non supporta il video.
   </video>
 
   <script>
     const video = document.getElementById("video");
 
-    // prova autoplay (funziona solo se il browser lo permette)
-    video.play().catch(() => {
-      console.log("Autoplay bloccato");
-    });
+    // tenta autoplay (ma browser spesso lo blocca)
+    video.play().catch(() => {});
 
-    // quando l’utente clicca, parte con audio sicuro
+    // clic → audio sicuro
     video.addEventListener("click", () => {
       video.muted = false;
       video.play();
