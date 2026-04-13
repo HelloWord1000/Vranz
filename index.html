@@ -1,22 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video</title>
+
   <style>
     body {
       margin: 0;
       background: black;
-    }
-    video {
-      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       height: 100vh;
+    }
+
+    video {
+      width: 576px;
+      height: 1024px;
       object-fit: cover;
+      background: black;
     }
   </style>
 </head>
+
 <body>
-  <video autoplay muted>
-    <source src="Video.mp4" type="video/mp4">
+
+  <video id="video" controls>
+    <source src="video.mp4" type="video/mp4">
+    Il tuo browser non supporta il video.
   </video>
+
+  <script>
+    const video = document.getElementById("video");
+
+    // prova autoplay (funziona solo se il browser lo permette)
+    video.play().catch(() => {
+      console.log("Autoplay bloccato");
+    });
+
+    // quando l’utente clicca, parte con audio sicuro
+    video.addEventListener("click", () => {
+      video.muted = false;
+      video.play();
+    });
+  </script>
+
 </body>
 </html>
